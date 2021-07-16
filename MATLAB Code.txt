@@ -1,0 +1,94 @@
+MATLAB Code:
+
+% Enter Parity Matrix
+P = input("Enter the P matrix: ");
+
+% Enter the values of n and k
+n = input("Enter the value of n: ");
+k = input("Enter the value of k: ");
+
+% Enter Received Vector
+r = input("Enter the r vector: ");
+r
+
+% Generating I Matrix of size k*k
+I = eye(k);
+
+% Generating G Matrix
+G = [I P]
+
+% Generating H Matrix
+L = P';
+
+
+% Generating I Matrix of size (n-k)
+I1 = eye(n-k)
+
+H=[L I1]
+
+% Generate U data vector, denoting all information sequences
+% Number of message vectors present
+no = 2 ^ k;
+% Iterate through an Unit-Spaced Vector
+for i = 1 : 2^k
+    
+    % Iterate through Vector with Specified Increment
+    for j = k : -1 : 1
+    	if rem(i - 1, 2 ^ (-j + k + 1)) >= 2 ^ (-j + k)
+        	u(i, j) = 1;
+    	else
+        	u(i, j) = 0;
+    	end
+    	
+    	
+    end
+    
+end
+
+u
+
+% Generate CodeVectors
+cv = rem(u * G, 2)
+
+
+%Find Syndrome
+Ht = transpose(H)
+
+s = rem(r * Ht, 2)
+
+for i = 1 : 1 : size(Ht)
+    if(Ht(i,1:3)==s)
+    	r(i) = 1-r(i);
+    	break;
+    end
+end
+
+disp('The Error is in bit:')
+disp(i)
+
+disp('The Corrected Codeword is :')
+disp(r)
+
+
+
+
+
+
+INPUTS:
+
+p=[111;
+   110;
+   101]
+n=6
+k=3
+r=[110011]
+
+
+
+p=[101;
+   011;
+   110]
+n=6
+k=3
+r=[110010]
+
